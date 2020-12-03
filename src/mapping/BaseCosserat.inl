@@ -31,11 +31,17 @@
 
 #include <sofa/helper/AdvancedTimer.h>
 #include <sofa/core/objectmodel/BaseContext.h>
+
+#ifndef ISSOFA_VERSION
 #include <sofa/helper/logging/Message.h>
+#endif
 
 
-
-namespace sofa::component::mapping
+namespace sofa
+{
+namespace component
+{
+namespace mapping
 {
 using sofa::core::objectmodel::BaseContext ;
 using sofa::helper::AdvancedTimer;
@@ -142,7 +148,7 @@ void BaseCosserat<TIn1, TIn2, TOut>::computeExponentialSE3(const double & x, con
 
     //    msg_info("BaseCosserat: ")<< "matix g_X : "<< g_X;
 
-    defaulttype::Mat3x3 M;
+    Matrix3 M;
     g_X.getsub(0,0,M);
 
     //    msg_info("BaseCosserat: ")<< "Sub matix M : "<< g_X;
@@ -356,7 +362,7 @@ void BaseCosserat<TIn1, TIn2, TOut>::update_TangExpSE3(const In1VecCoord & inDef
 
 
 template <class TIn1, class TIn2, class TOut>
-defaulttype::Vec6 BaseCosserat<TIn1, TIn2, TOut>::compute_eta(const defaulttype::Vec6 & baseEta, const In1VecDeriv & k_dot, const double abs_input){
+Vec6 BaseCosserat<TIn1, TIn2, TOut>::compute_eta(const Vec6 & baseEta, const In1VecDeriv & k_dot, const double abs_input){
 
     // Fill the initial vector
     const In1DataVecCoord* x1fromData = m_fromModel1->read(core::ConstVecCoordId::position());
@@ -369,7 +375,7 @@ defaulttype::Vec6 BaseCosserat<TIn1, TIn2, TOut>::compute_eta(const defaulttype:
     Mat6x6 Adjoint, Tg;
 
 
-    defaulttype::Vec6 Xi_dot;
+    Vec6 Xi_dot;
     for(unsigned int i = 0; i < 3; i++) Xi_dot[i] = k_dot[m_index_input][i];
 
 
@@ -479,5 +485,10 @@ void BaseCosserat<TIn1, TIn2, TOut>::draw(const core::visual::VisualParams* vpar
     //    }
     //return;
 }
+
+}
+
+}
+
 }
 

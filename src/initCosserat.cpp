@@ -28,8 +28,7 @@
 #include <cstring>
 #include <string>
 #include <sofa/core/ObjectFactory.h>
-#include <sofa/helper/system/PluginManager.h>
-using sofa::helper::system::PluginManager;
+
 
 
 namespace sofa
@@ -54,11 +53,6 @@ void initExternalModule()
     if (first)
     {
         first = false;
-    }
-    // Automatically load the STLIB plugin if available.
-    if( !PluginManager::getInstance().findPlugin("STLIB").empty() )
-    {
-        PluginManager::getInstance().loadPlugin("STLIB") ;
     }
     
 #ifdef SOFTROBOTS_PYTHON

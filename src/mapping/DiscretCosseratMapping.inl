@@ -30,9 +30,15 @@
 
 #include <sofa/helper/AdvancedTimer.h>
 #include <sofa/core/objectmodel/BaseContext.h>
+#ifndef ISSOFA_VERSION
 #include <sofa/helper/logging/Message.h>
+#endif
 
-namespace sofa::component::mapping
+namespace sofa
+{
+namespace component
+{
+namespace mapping
 {
 
 using sofa::core::objectmodel::BaseContext ;
@@ -230,14 +236,14 @@ void DiscretCosseratMapping<TIn1, TIn2, TOut>:: applyJ(
     if (!in2_vecDeriv.empty())
         _baseVelocity = in2_vecDeriv[0];
     //convert to Vec6
-    defaulttype::Vec6 baseVelocity;
+    Vec6 baseVelocity;
     for (size_t u=0;u<6;u++) {baseVelocity[u] = _baseVelocity[u];}
 
     //Apply the local transform i.e from SOFA frame to Frederico frame
     const In2VecCoord& xfrom2Data = m_fromModel2->read(core::ConstVecCoordId::position())->getValue();
     Transform Tinverse = Transform(xfrom2Data[0].getCenter(),xfrom2Data[0].getOrientation()).inversed();
     Mat6x6 P = this->build_projector(Tinverse);
-    defaulttype::Vec6 baseLocalVelocity = P * baseVelocity;
+    Vec6 baseLocalVelocity = P * baseVelocity;
     m_nodesVelocityVectors.push_back(baseLocalVelocity);
     if(d_debug.getValue())
         std::cout << "Base local Velocity :"<< baseLocalVelocity <<std::endl;
@@ -248,7 +254,7 @@ void DiscretCosseratMapping<TIn1, TIn2, TOut>:: applyJ(
         Mat6x6 Adjoint; Adjoint.clear();
         this->computeAdjoint(t,Adjoint);
 
-        defaulttype::Vec6 Xi_dot = Vec6(in1[i-1],Vector3(0.0,0.0,0.0)) ;
+        Vec6 Xi_dot = Vec6(in1[i-1],Vector3(0.0,0.0,0.0)) ;
         Vec6 temp = Adjoint * (m_nodesVelocityVectors[i-1] + m_nodesTangExpVectors[i] * Xi_dot );
         m_nodesVelocityVectors.push_back(temp);
         if(d_debug.getValue())
@@ -263,7 +269,7 @@ void DiscretCosseratMapping<TIn1, TIn2, TOut>:: applyJ(
         Mat6x6 Adjoint; Adjoint.clear();
         this->computeAdjoint(t,Adjoint);
 
-        defaulttype::Vec6 Xi_dot = Vec6(in1[m_indicesVectors[i]-1],Vector3(0.0,0.0,0.0)) ;
+        Vec6 Xi_dot = Vec6(in1[m_indicesVectors[i]-1],Vector3(0.0,0.0,0.0)) ;
         Vec6 temp = Adjoint * (m_nodesVelocityVectors[m_indicesVectors[i]-1] + m_framesTangExpVectors[i] * Xi_dot ); // eta
 
         Transform _T = Transform(out[i].getCenter(),out[i].getOrientation());
@@ -308,13 +314,13 @@ void DiscretCosseratMapping<TIn1, TIn2, TOut>:: applyJT(
     //convert the input from Deriv type to vec6 type, for the purpose of the matrix vector multiplication
     //    std::cout<< "Size of frames :"<< in.size()<< std::endl;
     for (size_t var = 0; var < in.size(); ++var) {
-        defaulttype::Vec6 vec;
+        Vec6 vec;
         for(unsigned j = 0; j < 6; j++) vec[j] = in[var][j];
 
         //Convert input from global frame(SOFA) to local frame
         Transform _T = Transform(frame[var].getCenter(),frame[var].getOrientation());
         Mat6x6 P_trans =(this->build_projector(_T)); P_trans.transpose();
-        defaulttype::Vec6 local_F = P_trans * vec;
+        Vec6 local_F = P_trans * vec;
         local_F_Vec.push_back(local_F);
     }
 
@@ -374,7 +380,7 @@ void DiscretCosseratMapping<TIn1, TIn2, TOut>:: applyJT(
 //___________________________________________________________________________
 template <class TIn1, class TIn2, class TOut>
 void DiscretCosseratMapping<TIn1, TIn2, TOut>::applyJT(
-        const core::ConstraintParams*/*cparams*/ , const helper::vector< In1DataMatrixDeriv*>&  dataMatOut1Const,
+        const core::ConstraintParams* /*cparams*/ , const helper::vector< In1DataMatrixDeriv*>&  dataMatOut1Const,
         const helper::vector< In2DataMatrixDeriv*>&  dataMatOut2Const ,
         const helper::vector<const OutDataMatrixDeriv*>& dataMatInConst)
 {
@@ -433,7 +439,7 @@ void DiscretCosseratMapping<TIn1, TIn2, TOut>::applyJT(
 
 
             const OutDeriv valueConst_ = colIt.val();
-            defaulttype::Vec6 valueConst;
+            Vec6 valueConst;
             for(unsigned j = 0; j < 6; j++) valueConst[j] = valueConst_[j];
 
             int indexBeam =  m_indicesVectors[childIndex];
@@ -447,7 +453,7 @@ void DiscretCosseratMapping<TIn1, TIn2, TOut>::applyJT(
             Mat6x6 temp = m_framesTangExpVectors[childIndex];   // m_framesTangExpVectors[s] computed in applyJ (here we transpose)
             temp.transpose();
 
-            defaulttype::Vec6 local_F =  coAdjoint * P_trans * valueConst; // constraint direction in local frame of the beam.
+            Vec6 local_F =  coAdjoint * P_trans * valueConst; // constraint direction in local frame of the beam.
 
 
             Vector3 f = matB_trans * temp * local_F; // constraint direction in the strain space.
@@ -594,7 +600,9 @@ void DiscretCosseratMapping<TIn1, TIn2, TOut>::draw(const core::visual::VisualPa
     double radius = 5;
     defaulttype::Vec4f colorL = defaulttype::Vec4f(0.4,0.4,0.4,1);
     //    defaulttype::Vec4f colorL = defaulttype::Vec4f(0.,0.,1.,1);
+#ifndef ISSOFA_VERSION
     vparams->drawTool()->drawLineStrip(positions,radius,colorL);
+#endif
 
     if (!vparams->displayFlags().getShowMappings())
         if(!d_debug.getValue()) return;
@@ -609,7 +617,7 @@ void DiscretCosseratMapping<TIn1, TIn2, TOut>::draw(const core::visual::VisualPa
         x= q.rotate(defaulttype::Vector3(1.0,0,0));
         y= q.rotate(defaulttype::Vector3(0,1.0,0));
         z= q.rotate(defaulttype::Vector3(0,0,1.0));
-        double radius_arrow = 1.0/.0;
+        double radius_arrow = 1.0;
 
         vparams->drawTool()->drawArrow(P1,(P1 + x)*1.0, radius_arrow, defaulttype::Vec<4,double>(1,0,0,1));
         vparams->drawTool()->drawArrow(P1,(P1 + y)*1.0, radius_arrow, defaulttype::Vec<4,double>(0,1,0,1));
@@ -618,4 +626,6 @@ void DiscretCosseratMapping<TIn1, TIn2, TOut>::draw(const core::visual::VisualPa
     //return;
 }
 
+}
+}
 } // namespace sofa

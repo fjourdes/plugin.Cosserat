@@ -25,7 +25,11 @@
 #include <sofa/core/behavior/MechanicalState.h>
 #include <iostream>
 
-namespace sofa::component::constraintset
+namespace sofa
+{
+namespace component
+{
+namespace constraintset
 {
 
 using sofa::core::behavior::ConstraintResolution ;
@@ -181,4 +185,6 @@ private:
 
 };
 
+}
+}
 }

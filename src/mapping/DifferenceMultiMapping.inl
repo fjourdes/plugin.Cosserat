@@ -30,17 +30,22 @@
 
 #include <sofa/helper/AdvancedTimer.h>
 #include <sofa/core/objectmodel/BaseContext.h>
+
+#ifndef ISSOFA_VERSION
 #include <sofa/helper/logging/Message.h>
 #include <sofa/helper/types/RGBAColor.h>
+#endif
 
 
-
-namespace sofa::component::mapping
+namespace sofa
+{
+namespace component
+{
+namespace mapping
 {
 using sofa::core::objectmodel::BaseContext ;
 using sofa::helper::AdvancedTimer;
 using sofa::helper::WriteAccessor;
-using sofa::helper::types::RGBAColor ;
 
 template <class TIn1, class TIn2, class TOut>
 DifferenceMultiMapping<TIn1, TIn2, TOut>::DifferenceMultiMapping()
@@ -477,7 +482,7 @@ void DifferenceMultiMapping<TIn1, TIn2, TOut>::applyJT(
 //___________________________________________________________________________
 template <class TIn1, class TIn2, class TOut>
 void DifferenceMultiMapping<TIn1, TIn2, TOut>::applyJT(
-        const core::ConstraintParams*/*cparams*/ , const helper::vector< In1DataMatrixDeriv*>&  dataMatOut1Const,
+        const core::ConstraintParams* /*cparams*/ , const helper::vector< In1DataMatrixDeriv*>&  dataMatOut1Const,
         const helper::vector< In2DataMatrixDeriv*>&  dataMatOut2Const ,
         const helper::vector<const OutDataMatrixDeriv*>& dataMatInConst)
 {
@@ -571,22 +576,20 @@ void DifferenceMultiMapping<TIn1, TIn2, TOut>::draw(const core::visual::VisualPa
     if (!vparams->displayFlags().getShowInteractionForceFields())
         return;
 
+#ifndef ISSOFA_VERSION
     vparams->drawTool()->saveLastState();
 
     vparams->drawTool()->disableLighting();
-
-    RGBAColor color;
-
-    color = RGBAColor::magenta();
+#endif
 
     std::vector<sofa::defaulttype::Vector3> vertices;
 
     //    vparams->drawTool()->drawLines(vertices, 1, color);
+    sofa::defaulttype::Vec4f color = sofa::defaulttype::Vec4f(0.f, 1.f, 0.f, 1.f);
 
     sofa::defaulttype::Vec4f colorL = d_color.getValue();
     if(d_drawArrows.getValue()){
         for (size_t i =0 ; i < m_constraints.size(); i++) {
-            color = RGBAColor::green();
             //        std::cout << " Projection : "<< m_constraints[i].proj << " ;  Q :" << m_constraints[i].Q << std::endl;
             vertices.push_back(m_constraints[i].proj);
             vertices.push_back(m_constraints[i].Q);
@@ -614,15 +617,20 @@ void DifferenceMultiMapping<TIn1, TIn2, TOut>::draw(const core::visual::VisualPa
         const In1DataVecDeriv* xDestData = m_fromModel1->read(core::ConstVecCoordId::position());
         const In1VecCoord& fromPos = xDestData[0].getValue();
         //        msg_info("DRAW")<< "The size of object is : "<< postions.size();
+#ifndef ISSOFA_VERSION
         vparams->drawTool()->draw3DText_Indices(fromPos,6,defaulttype::Vec<4,Real>(0,2,0,1));
+#endif
     }
 
 
     //    for(unsigned int j = 0; j<sz-1; j++){
     //        vparams->drawTool()->drawLine(postions[j],postions[j+1],sofa::defaulttype::Vec4f(colorL[0],colorL[1],colorL[2],radius));
     //    }
-
+#ifndef ISSOFA_VERSION
     vparams->drawTool()->restoreLastState();
+#endif
 }
 
+}
+}
 } // namespace sofa

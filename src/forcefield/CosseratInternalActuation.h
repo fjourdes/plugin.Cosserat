@@ -32,14 +32,18 @@
 #include <sofa/defaulttype/Vec.h>
 #include <sofa/defaulttype/Mat.h>
 #include <sofa/core/behavior/MechanicalState.h>
+#include <sofa/core/behavior/ForceField.h>
 #include <sofa/core/objectmodel/Data.h>
 #include <sofa/core/MechanicalParams.h>
-#include <SofaBaseLinearSolver/CompressedRowSparseMatrix.h>
-#include <SofaBaseLinearSolver/DefaultMultiMatrixAccessor.h>
 
 #include <sofa/helper/OptionsGroup.h>
+#include "../initCosserat.h"
 
-namespace sofa::component::forcefield
+namespace sofa
+{
+namespace component
+{
+namespace forcefield
 {
 
 using sofa::defaulttype::Vec ;
@@ -48,9 +52,6 @@ using sofa::helper::vector;
 using sofa::core::MechanicalParams;
 using sofa::defaulttype::BaseMatrix;
 using sofa::core::behavior::ForceField ;
-using sofa::component::linearsolver::CompressedRowSparseMatrix ;
-using sofa::core::behavior::MultiMatrixAccessor ;
-
 using sofa::helper::OptionsGroup;
 
 /**
@@ -75,14 +76,8 @@ public :
     typedef Vec<3, Real>                Vec3;
     typedef Mat<3, 3, Real>             Mat33;
 
-    typedef CompressedRowSparseMatrix<Mat33> CSRMat33B66;
-    typedef defaulttype::Vector3 vector3;
-
-    typedef typename CompressedRowSparseMatrix<Mat33>::ColBlockConstIterator _3_3_ColBlockConstIterator;
-    typedef typename CompressedRowSparseMatrix<Mat33>::RowBlockConstIterator _3_3_RowBlockConstIterator;
-    typedef typename CompressedRowSparseMatrix<Mat33>::BlockConstAccessor _3_3_BlockConstAccessor;
-    typedef typename CompressedRowSparseMatrix<Mat33>::BlockAccessor _3_3_BlockAccessor;
-
+    using Vec2 = sofa::defaulttype::Vector2;
+    using MultiMatrixAccessor = sofa::core::behavior::MultiMatrixAccessor;
 
 public :
     CosseratInternalActuation();
@@ -146,10 +141,8 @@ private :
 
     //Gaussian quadrature parameters for 2 points
 
-    defaulttype::Vec2 m_gaussCoeff = defaulttype::Vec2(1.0/sqrt(3.0),0.57735); // Gauss quadrature coefficients
-    defaulttype::Vec2 m_gaussWeights = defaulttype::Vec2(1.0,1.0);   //Gauss quadrature weights
-
-
+    Vec2 m_gaussCoeff   = Vec2(1.0/sqrt(3.0),0.57735); // Gauss quadrature coefficients
+    Vec2 m_gaussWeights = Vec2(1.0,1.0);   //Gauss quadrature weights
 
     ////////////////////////// Inherited attributes ////////////////////////////
     /// https://gcc.gnu.org/onlinedocs/gcc/Name-lookup.html
@@ -162,4 +155,6 @@ private :
     ////////////////////////////////////////////////////////////////////////////
 };
 
+}
+}
 } // sofa

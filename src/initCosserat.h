@@ -32,6 +32,11 @@
 
 #include <sofa/helper/system/config.h>
 
+#ifdef ISSOFA_VERSION
+#define msg_info(...) this->sout
+#define msg_warning(...) this->sout
+#define msg_error(...) this->serr
+#endif
 
 #ifdef SOFA_BUILD_COSSERAT
 #define SOFA_TARGET CosseratPlugin

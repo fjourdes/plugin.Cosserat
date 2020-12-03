@@ -21,6 +21,7 @@
 ******************************************************************************/
 #define SOFA_COMPONENT_MAPPING_POE_MAPING_CPP
 #include "DiscretCosseratMapping.inl"
+#include "BaseCosserat.inl"
 #include <sofa/defaulttype/VecTypes.h>
 #include <sofa/defaulttype/RigidTypes.h>
 #include <sofa/core/ObjectFactory.h>

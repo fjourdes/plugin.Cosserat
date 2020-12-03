@@ -21,22 +21,24 @@
 ******************************************************************************/
 #pragma once
 #include <sofa/core/BaseMapping.h>
-#include <sofa/core/core.h>
+
 #include <sofa/core/Multi2Mapping.h>
 #include "../initCosserat.h"
 #include <sofa/defaulttype/SolidTypes.h>
 #include <sofa/defaulttype/RigidTypes.h>
+#include <sofa/defaulttype/Vec.h>
 #include "BaseCosserat.h"
 
 
-namespace sofa::component::mapping
+namespace sofa
+{
+namespace component
+{
+namespace mapping
 {
 using sofa::defaulttype::SolidTypes ;
 using sofa::core::objectmodel::BaseContext ;
-using sofa::defaulttype::Matrix3;
-using sofa::defaulttype::Matrix4;
-using sofa::defaulttype::Vector3;
-using sofa::defaulttype::Vec6;
+
 using std::get;
 using helper::vector;
 
@@ -184,5 +186,6 @@ private:
 
 };
 
-
+}
+}
 } // sofa::component::mapping

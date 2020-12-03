@@ -22,26 +22,31 @@
 
 #pragma once
 #include <sofa/core/BaseMapping.h>
-#include <sofa/core/core.h>
+
 #include <sofa/core/Multi2Mapping.h>
 #include "../initCosserat.h"
 #include <sofa/defaulttype/SolidTypes.h>
 #include <sofa/defaulttype/RigidTypes.h>
 #include <sofa/core/objectmodel/BaseObject.h>
 #include <math.h>
+#include <sofa/defaulttype/Mat.h>
 #include <sofa/defaulttype/Vec.h>
 
 
 
-namespace sofa::component::mapping
-
+namespace sofa
 {
+namespace component
+{
+namespace mapping
+{
+
 using sofa::defaulttype::SolidTypes ;
 using sofa::core::objectmodel::BaseContext ;
 using sofa::defaulttype::Matrix3;
 using sofa::defaulttype::Matrix4;
 using sofa::defaulttype::Vector3;
-using sofa::defaulttype::Vec6;
+using Vec6 = sofa::defaulttype::Vector6;
 using std::get;
 using sofa::core::objectmodel::BaseObject;
 
@@ -172,7 +177,7 @@ protected:
     void update_TangExpSE3(const In1VecCoord & inDeform, const helper::vector<double> &curv_abs_input , const helper::vector<double> &curv_abs_output );
     void compute_Tang_Exp(double & x, const Vector3& k, Mat6x6 & TgX);
 
-    defaulttype::Vec6 compute_eta(const Vec6 & baseEta, const In1VecDeriv & k_dot, const double abs_input);
+    Vec6 compute_eta(const Vec6 & baseEta, const In1VecDeriv & k_dot, const double abs_input);
     defaulttype::Matrix4 computeLogarithme(const double & x, const Mat4x4 &gX);
     double computeTheta(const double &x, const Mat4x4 &gX){
         double Tr_gx = 0.0;
@@ -282,5 +287,9 @@ public:
 extern template class SOFA_COSSERAT_MAPPING_API BaseCosserat< sofa::defaulttype::Vec3Types, sofa::defaulttype::Vec3Types, sofa::defaulttype::Vec3Types >;
 extern template class SOFA_COSSERAT_MAPPING_API BaseCosserat< sofa::defaulttype::Vec3Types, sofa::defaulttype::Rigid3Types, sofa::defaulttype::Rigid3Types >;
 #endif
+
+}
+
+}
 
 } // namespace sofa

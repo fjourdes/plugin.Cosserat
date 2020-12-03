@@ -30,7 +30,6 @@
 #pragma once
 
 #include "BeamHookeLawForceField.h"
-#include <SofaBaseLinearSolver/FullVector.h>
 #include <sofa/core/behavior/MechanicalState.h>
 
 using sofa::core::behavior::MechanicalState ;
@@ -52,10 +51,13 @@ using std::endl ;
 #include <algorithm>
 #include <ctime>
 
-namespace sofa::component::forcefield
+namespace sofa
+{
+namespace component
+{
+namespace forcefield
 {
 
-using sofa::component::linearsolver::DefaultMultiMatrixAccessor ;
 using sofa::core::behavior::MultiMatrixAccessor ;
 using sofa::core::behavior::BaseMechanicalState ;
 using sofa::helper::WriteAccessor ;
@@ -230,6 +232,6 @@ void BeamHookeLawForceField<DataTypes>::addKToMatrix(const MechanicalParams* mpa
 }
 
 
-
-
 } // forcefield
+}
+}

@@ -23,7 +23,7 @@
 #define SOFA_COMPONENT_MAPPING_DYNAMIC_COSSERAT_DISCRET_H
 
 #include <sofa/core/BaseMapping.h>
-#include <sofa/core/core.h>
+
 #include <sofa/core/Multi2Mapping.h>
 #include "../initCosserat.h"
 #include <sofa/defaulttype/SolidTypes.h>
@@ -36,12 +36,7 @@ namespace sofa
 
 {
 using sofa::defaulttype::SolidTypes ;
-using sofa::core::objectmodel::BaseContext ;
-using sofa::defaulttype::Matrix3;
-using sofa::defaulttype::Matrix4;
-using sofa::defaulttype::Vector3;
-using sofa::defaulttype::Vec6;
-using std::get;
+
 
 namespace component
 {
@@ -109,6 +104,7 @@ public:
     typedef MultiLink<DiscretDynamicCosseratMapping<In1,In2,Out>, sofa::core::State< Out >, BaseLink::FLAG_STOREPATH|BaseLink::FLAG_STRONGLINK> LinkToModels;
 
     typedef typename SolidTypes<Real>::Transform      Transform ;
+    using Vec6 = sofa::defaulttype::Vector6;
 
 protected:
     core::State<In1>* m_fromModel1;
@@ -186,8 +182,8 @@ public:
 
     /**********************DISCRET DYNAMIC COSSERAT METHODS**************************/
 
-    void computeMassComponent(const double sectionMass);
-    void computeJ_Jdot_i(const Mat6x6 &Adjoint, size_t frameId, helper::vector<Mat6x3> &J_i, const defaulttype::Vec6 &etaFrame, helper::vector<Mat6x3> &J_dot_i);
+    // void computeMassComponent(const double sectionMass);
+    void computeJ_Jdot_i(const Mat6x6 &Adjoint, size_t frameId, helper::vector<Mat6x3> &J_i, const Vec6 &etaFrame, helper::vector<Mat6x3> &J_dot_i);
 
 };
 

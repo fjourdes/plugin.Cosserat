@@ -27,7 +27,11 @@
 #include <iostream>
 #include <sofa/core/DataEngine.h>
 #include <sofa/defaulttype/Vec.h>
+#ifndef ISSOFA_VERSION
 #include <sofa/simulation/AnimateBeginEvent.h>
+#else
+#include <sofa/simulation/common/AnimateBeginEvent.h>
+#endif
 
 namespace sofa {
 
@@ -113,7 +117,12 @@ private:
     helper::vector<Constraint> m_constraints;
     unsigned int m_step;
 
+#ifndef ISSOFA_VERSION
     void doUpdate() override
+#else
+    void update() override
+#endif
+
     {
         computeProximity();
     }

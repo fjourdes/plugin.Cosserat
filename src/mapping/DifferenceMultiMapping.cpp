@@ -25,7 +25,11 @@
 #include <sofa/defaulttype/RigidTypes.h>
 #include <sofa/core/ObjectFactory.h>
 
-namespace sofa::component::mapping
+namespace sofa
+{
+namespace component
+{
+namespace mapping
 {
 
 using namespace sofa::defaulttype;
@@ -35,5 +39,6 @@ int DifferenceMultiMappingClass = core::RegisterObject("Set the positions and ve
         .add< DifferenceMultiMapping< sofa::defaulttype::Vec3Types, sofa::defaulttype::Vec3Types, sofa::defaulttype::Vec3Types > >() ;
 
 
-
+}
+}
 } // namespace sofa.

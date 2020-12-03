@@ -34,12 +34,15 @@
 #include <sofa/core/behavior/MechanicalState.h>
 #include <sofa/core/objectmodel/Data.h>
 #include <sofa/core/MechanicalParams.h>
-#include <SofaBaseLinearSolver/CompressedRowSparseMatrix.h>
-#include <SofaBaseLinearSolver/DefaultMultiMatrixAccessor.h>
-
+#include <sofa/core/behavior/ForceField.h>
 #include <sofa/helper/OptionsGroup.h>
+#include "../initCosserat.h"
 
-namespace sofa::component::forcefield
+namespace sofa
+{
+namespace component
+{
+namespace forcefield
 {
 
 using sofa::defaulttype::Vec ;
@@ -48,8 +51,6 @@ using sofa::helper::vector;
 using sofa::core::MechanicalParams;
 using sofa::defaulttype::BaseMatrix;
 using sofa::core::behavior::ForceField ;
-using sofa::component::linearsolver::CompressedRowSparseMatrix ;
-using sofa::core::behavior::MultiMatrixAccessor ;
 
 using sofa::helper::OptionsGroup;
 
@@ -75,13 +76,7 @@ public :
     typedef Vec<3, Real>                Vec3;
     typedef Mat<3, 3, Real>             Mat33;
 
-    typedef CompressedRowSparseMatrix<Mat33> CSRMat33B66;
-
-    typedef typename CompressedRowSparseMatrix<Mat33>::ColBlockConstIterator _3_3_ColBlockConstIterator;
-    typedef typename CompressedRowSparseMatrix<Mat33>::RowBlockConstIterator _3_3_RowBlockConstIterator;
-    typedef typename CompressedRowSparseMatrix<Mat33>::BlockConstAccessor _3_3_BlockConstAccessor;
-    typedef typename CompressedRowSparseMatrix<Mat33>::BlockAccessor _3_3_BlockAccessor;
-
+    using MultiMatrixAccessor = sofa::core::behavior::MultiMatrixAccessor;
 
 public :
     BeamHookeLawForceField();
@@ -143,5 +138,6 @@ private :
     ////////////////////////////////////////////////////////////////////////////
 };
 
-
 } // forcefield
+}
+}

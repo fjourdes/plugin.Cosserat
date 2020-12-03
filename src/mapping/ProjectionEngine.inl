@@ -25,7 +25,6 @@
 #include "ProjectionEngine.h"
 #include <sofa/core/visual/VisualParams.h>
 #include <sofa/core/behavior/BaseConstraint.h>
-#include <sofa/defaulttype/RGBAColor.h>
 #include <sofa/defaulttype/Vec.h>
 namespace sofa
 {
@@ -215,11 +214,11 @@ void ProjectionEngine<DataTypes>::draw(const core::visual::VisualParams* vparams
     if (!vparams->displayFlags().getShowInteractionForceFields())
         return;
 
+#ifndef ISSOFA_VERSION
     vparams->drawTool()->saveLastState();
-
     vparams->drawTool()->disableLighting();
+#endif
 
-    sofa::defaulttype::RGBAColor color;
     //    Constraint& c = m_constraints[0];
 
     //    if(c.thirdConstraint<0)
@@ -227,7 +226,7 @@ void ProjectionEngine<DataTypes>::draw(const core::visual::VisualParams* vparams
     //    else if(c.thirdConstraint>0)
     //        color = sofa::defaulttype::RGBAColor::green();
     //    else
-    color = sofa::defaulttype::RGBAColor::magenta();
+    sofa::defaulttype::Vec4f color = sofa::defaulttype::Vec4f(1.f, 0.f, 1.f, 1.f);
 
     std::vector<sofa::defaulttype::Vector3> vertices;
     //    vertices.push_back(DataTypes::getCPos((this->mstate1->read(core::ConstVecCoordId::position())->getValue())[d_m1.getValue()]));
@@ -240,8 +239,10 @@ void ProjectionEngine<DataTypes>::draw(const core::visual::VisualParams* vparams
     //    vertices.push_back(DataTypes::getCPos((this->mstate2->read(core::ConstVecCoordId::position())->getValue())[d_m2b.getValue()]));
     vparams->drawTool()->drawLines(vertices, 1, color);
 
+    color = sofa::defaulttype::Vec4f(0.f, 1.f, 0.f, 1.f);
+
+
     for (size_t i =0 ; i < m_constraints.size(); i++) {
-        color = sofa::defaulttype::RGBAColor::green();
         vertices.push_back(m_constraints[i].P);
         vertices.push_back(m_constraints[i].Q);
         vparams->drawTool()->drawLines(vertices, 1, color);
@@ -249,15 +250,16 @@ void ProjectionEngine<DataTypes>::draw(const core::visual::VisualParams* vparams
     //printf("ProjectionEngine<DataTypes>::draw(const core::visual::VisualParams* vparams) After \n");
 
     //drawLinesBetweenPoints(vparams);
+#ifndef ISSOFA_VERSION
     vparams->drawTool()->restoreLastState();
+#endif
 }
 
 template<class DataTypes>
 void ProjectionEngine<DataTypes>::drawLinesBetweenPoints(const core::visual::VisualParams* vparams)
 {
     const VecCoord & positions  = d_dest.getValue(); // this->mstate2->read(core::ConstVecCoordId::position())->getValue();
-    sofa::defaulttype::RGBAColor color;
-    color = sofa::defaulttype::RGBAColor::magenta();
+    sofa::defaulttype::Vec4f color = sofa::defaulttype::Vec4f(1.f, 0.f, 1.f, 1.f);
     std::vector<sofa::defaulttype::Vector3> vertices;
     for (unsigned int i=0; i<positions.size()-1; i++)
     {

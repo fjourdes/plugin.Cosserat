@@ -23,7 +23,6 @@
 #define SOFA_COMPONENT_MAPPING_POEMAPING_H
 
 #include <sofa/core/BaseMapping.h>
-#include <sofa/core/core.h>
 #include <sofa/core/Multi2Mapping.h>
 #include "../initCosserat.h"
 #include <sofa/defaulttype/SolidTypes.h>
@@ -32,21 +31,15 @@
 
 
 namespace sofa
-
 {
-using sofa::defaulttype::SolidTypes ;
-using sofa::core::objectmodel::BaseContext ;
-using sofa::defaulttype::Matrix3;
-using sofa::defaulttype::Matrix4;
-using sofa::defaulttype::Vector3;
-using sofa::defaulttype::Vec6;
-using std::get;
 
 namespace component
 {
 
 namespace mapping
 {
+
+using sofa::defaulttype::SolidTypes;
 
 /*!
  * \class DiscretCosseratMapping
@@ -109,6 +102,8 @@ public:
     typedef MultiLink<DiscretCosseratMapping<In1,In2,Out>, sofa::core::State< Out >, BaseLink::FLAG_STOREPATH|BaseLink::FLAG_STRONGLINK> LinkToModels;
 
     typedef typename SolidTypes<Real>::Transform      Transform ;
+
+    using Vec6 = sofa::defaulttype::Vector6;
 
 protected:
     //    Data<helper::vector<double>>      d_curv_abs_input ;
