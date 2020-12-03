@@ -1,27 +1,27 @@
 cmake_minimum_required(VERSION 3.1)
 project(CosseratPlugin VERSION 1.0)
 
-include(cmake/environment.cmake)
+# include(cmake/environment.cmake)
 find_package(SofaFramework REQUIRED)
 
-option(COSSERAT_IGNORE_ERRORS "Enable this option to ignore the recommendations and generate anyway." OFF)
-if(NOT COSSERAT_IGNORE_ERRORS)    
-    if(NOT PLUGIN_SOFAPYTHON)
-        message(SEND_ERROR "
-            You should not use the plugin Cosserat without enabling PLUGIN_SOFAPYTHON.
-            Most examples will not be loadable.
-            To fix this error you can either follow the recommendation or enable COSSERAT_IGNORE_ERRORS.")
-    endif()    
-endif()
+# option(COSSERAT_IGNORE_ERRORS "Enable this option to ignore the recommendations and generate anyway." OFF)
+# if(NOT COSSERAT_IGNORE_ERRORS)    
+    # if(NOT PLUGIN_SOFAPYTHON)
+        # message(SEND_ERROR "
+            # You should not use the plugin Cosserat without enabling PLUGIN_SOFAPYTHON.
+            # Most examples will not be loadable.
+            # To fix this error you can either follow the recommendation or enable COSSERAT_IGNORE_ERRORS.")
+    # endif()    
+# endif()
 
-find_package(SofaPython QUIET)
-set(COSSERAT_PYTHON ${SofaPython_FOUND}) # config.h.in
-find_package(STLIB QUIET)
-if(STLIB_FOUND)
-    message("-- Found dependency : 'STLIB' plugin .")
-else()
-    message("-- The highly recommanded 'STLIB' plugin is missing. You can compile Cosserat but most of the provided python examples will not work. ")
-endif()
+# find_package(SofaPython QUIET)
+# set(COSSERAT_PYTHON ${SofaPython_FOUND}) # config.h.in
+# find_package(STLIB QUIET)
+# if(STLIB_FOUND)
+    # message("-- Found dependency : 'STLIB' plugin .")
+# else()
+    # message("-- The highly recommanded 'STLIB' plugin is missing. You can compile Cosserat but most of the provided python examples will not work. ")
+# endif()
 
 
 set(HEADER_FILES
@@ -45,8 +45,7 @@ set(HEADER_FILES
 
     src/constraint/CosseratSlidingConstraint.h
     src/constraint/CosseratSlidingConstraint.inl
-    src/constraint/QPSlidingConstraint.h
-    src/constraint/QPSlidingConstraint.inl
+
     )
 
 set(SOURCE_FILES
@@ -63,7 +62,6 @@ set(SOURCE_FILES
     src/forcefield/CosseratInternalActuation.cpp
 
     src/constraint/CosseratSlidingConstraint.cpp 
-    src/constraint/QPSlidingConstraint.cpp
     )
 
 set(README_FILE "Cosserat.txt" )
@@ -82,9 +80,13 @@ if(SoftRobots_FOUND)
     list(APPEND HEADER_FILES
         src/constraint/CosseratActuatorConstraint.h
         src/constraint/CosseratActuatorConstraint.inl
+        src/constraint/QPSlidingConstraint.h
+        src/constraint/QPSlidingConstraint.inl
         )
     list(APPEND SOURCE_FILES
         src/constraint/CosseratActuatorConstraint.cpp
+        src/constraint/QPSlidingConstraint.cpp
+
         )    
 
 endif()
@@ -102,25 +104,25 @@ set_target_properties(${PROJECT_NAME} PROPERTIES DEBUG_POSTFIX "_d")
 target_link_libraries(${PROJECT_NAME} SofaCore SofaConstraint SofaSimpleFem SofaBaseMechanics SofaRigid SofaMiscMapping)
 
 
-if(SofaPython_FOUND)
-    target_link_libraries(${PROJECT_NAME} SofaPython)
-    # Config files and install rules for pythons scripts
-    sofa_install_pythonscripts(PLUGIN_NAME ${PROJECT_NAME} PYTHONSCRIPTS_SOURCE_DIR "python/cosserat")
-endif()
+# if(SofaPython_FOUND)
+    # target_link_libraries(${PROJECT_NAME} SofaPython)
+    # # Config files and install rules for pythons scripts
+    # sofa_install_pythonscripts(PLUGIN_NAME ${PROJECT_NAME} PYTHONSCRIPTS_SOURCE_DIR "python/cosserat")
+# endif()
 
 if(SoftRobots_FOUND)
     target_link_libraries(${PROJECT_NAME} SoftRobots)
 endif() 
 
-## Install rules for the library and headers; CMake package configurations files
-sofa_generate_package(
-    NAME CosseratPlugin
-    VERSION ${PROJECT_VERSION}
-    TARGETS ${PROJECT_NAME}
-    INCLUDE_SOURCE_DIR "src"
-    INCLUDE_INSTALL_DIR ${PROJECT_NAME}    
-    RELOCATABLE "plugins"
-    )
+# ## Install rules for the library and headers; CMake package configurations files
+# sofa_generate_package(
+    # NAME CosseratPlugin
+    # VERSION ${PROJECT_VERSION}
+    # TARGETS ${PROJECT_NAME}
+    # INCLUDE_SOURCE_DIR "src"
+    # INCLUDE_INSTALL_DIR ${PROJECT_NAME}    
+    # RELOCATABLE "plugins"
+    # )
 
 
 option(COSSERAT_BUILD_TESTS "Build unit tests" OFF )
@@ -131,4 +133,4 @@ endif()
 SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 SET_PROPERTY(TARGET ${PROJECT_NAME} PROPERTY FOLDER "plugins")
 
-include(cmake/packaging.cmake)
+# include(cmake/packaging.cmake)
