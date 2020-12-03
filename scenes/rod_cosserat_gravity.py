@@ -25,7 +25,7 @@ def createScene(rootNode):
     
     rootNode = rootNode.createChild("Cosserat")
     
-    rootNode.createObject('EulerImplicitSolver', rayleighStiffness="0.0", rayleighMass='0.0')
+        rootNode.createObject('EulerImplicitSolver', firstOrder="0", rayleighStiffness="0.5", rayleighMass='0.0')
     rootNode.createObject('SparseLDLSolver', name='solver')
     rootNode.createObject('GenericConstraintCorrection')
 
@@ -47,7 +47,7 @@ def createScene(rootNode):
 
     rateAngularDeformNode = rootNode.createChild('rateAngularDeform')
     rateAngularDeformMO = rateAngularDeformNode.createObject('MechanicalObject', template='Vec3d', name='rateAngularDeformMO', position=pos, velocity='0 0 0.0 0 0 0  0 0 0') # (2 series of 3 angles for 2 sections. we suppose that the lenght is 10 for each)
-    BeamHookeLawForce = rateAngularDeformNode.createObject('BeamHookeLawForceField', crossSectionShape='circular', length='10 10 10', radius='0.5', youngModulus='5e3')
+    BeamHookeLawForce = rateAngularDeformNode.createObject('BeamHookeLawForceField', crossSectionShape='circular', length='10 10 10', radius='0.5', youngModulus='5e6')
 
     ##############
     ## Frames
